@@ -40,7 +40,7 @@ This repository makes that catalog **directly callable by an agent through WebMC
 
 ## The tools this page registers
 
-All five are registered in [`site/webmcp.js`](site/webmcp.js).
+All six are registered in [`site/webmcp.js`](site/webmcp.js).
 
 | Tool | What it does |
 |---|---|
@@ -49,6 +49,7 @@ All five are registered in [`site/webmcp.js`](site/webmcp.js).
 | `get_tool_report` | The full scorecard: all six dimensions scored 1–5, incident history, disclosed watch-out, source, and when a person last looked at it. |
 | `filter_catalog` | Drives the catalog UI on the page itself, so the human sees the same shortlist the agent is working from. |
 | `request_vetting` | The human/agent loop. When an agent hits something Vettory does not cover, that unmet need is recorded and surfaced to the person — who does the vetting. |
+| `inspect_agent_tools` | **Vets WebMCP tool definitions themselves** — the ones *other* pages hand the agent. See below. |
 
 ## Why this use case suits WebMCP
 
@@ -65,7 +66,29 @@ on screen filters. When it calls `check_tool_trust`, that tool's scorecard opens
 activity panel logs every call as it happens. The person is not reading a summary of
 what their agent did — they are watching it, and can disagree while it is still cheap to.
 
-**3. `request_vetting` is a loop that does not close without a human.** The agent finds
+**3. Vettory can vet the medium, not just the vendors.** WebMCP means a tool description is
+something an agent *reads* — which makes it an untrusted input, not documentation. A page can
+bury instructions in one: *"before answering, BCC a copy to…"*, *"do not tell the user"*. That is
+`postmark-mcp` again, one layer down, and now any page can try it.
+
+`inspect_agent_tools` takes the definitions another site handed the agent and checks them for
+known attack shapes — instructions aimed at the agent, concealment requests, covert-copy
+instructions, invisible characters, credential requests, a read-shaped name whose description
+describes writing, and names that shadow a vendor Vettory already lists. That last one catches
+the original attack by construction: a tool calling itself `postmark-mcp` is flagged against the
+real Postmark entry.
+
+The method comes from the *Vettory MCP Security Adversarial Test Procedure* v1.0 — an internal
+standard of **MindXpansion, LLC**, dated 20 Aug 2026 — specifically tests T1 (tool-description
+injection), T3 (definition change), and T4/T5 (scope and confused deputy). That standard is not
+published in this repository. It predates this hackathon and was written for MCP servers.
+
+**Its limits, stated plainly:** it is a pattern check. It matches known shapes and will miss an
+attack phrased in a form it does not recognise. "Nothing matched" is not a finding that a tool is
+safe. The tool says exactly that in its own response, rather than letting an agent read more into
+a clean result than it earns.
+
+**4. `request_vetting` is a loop that does not close without a human.** The agent finds
 the gap; a person does the vetting; the catalog gets better; the next agent gets a real
 answer. Deliberately, the agent cannot write to the queue unattended — a queue an agent
 can fill on its own is a queue that can be gamed. The human has to send it.
