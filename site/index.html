@@ -6,19 +6,19 @@
 <link rel="icon" type="image/png" href="/favicon.png">
 <title>Vettory — Vetted Tools for AI Agents</title>
 <meta name="description" content="The trusted door where AI agents pick up vetted tools — each scored against a published rubric, cited to its source, and watched over time.">
-<link rel="canonical" href="https://vettory.misti.workers.dev/">
+<link rel="canonical" href="https://vettory-webmcp.misti.workers.dev/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Vettory">
 <meta property="og:title" content="Vettory — Vetted tools. Trusted results.">
 <meta property="og:description" content="The trusted door where AI agents pick up vetted tools — scored against a published rubric, cited, and watched over time.">
-<meta property="og:url" content="https://vettory.misti.workers.dev/">
-<meta property="og:image" content="https://vettory.misti.workers.dev/og.png">
+<meta property="og:url" content="https://vettory-webmcp.misti.workers.dev/">
+<meta property="og:image" content="https://vettory-webmcp.misti.workers.dev/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Vettory — Vetted tools. Trusted results.">
 <meta name="twitter:description" content="The trusted door where AI agents pick up vetted tools — scored, cited, and watched over time.">
-<meta name="twitter:image" content="https://vettory.misti.workers.dev/og.png">
+<meta name="twitter:image" content="https://vettory-webmcp.misti.workers.dev/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Instrument+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -370,7 +370,7 @@
     </div>
     <div class="codebox">
       <span class="k">Or call it yourself · public demo key</span>
-      <pre>curl "https://vettory.misti.workers.dev/api/search?need=send%20email&amp;key=vty_public_demo"</pre>
+      <pre>curl "https://vettory-webmcp.misti.workers.dev/api/search?need=send%20email&amp;key=vty_public_demo"</pre>
     </div>
     <div class="earlyrow">
       <a class="btn-ghost" href="https://tally.so/r/eqO6JQ" target="_blank" rel="noopener">Join the early-access list &#8594;</a>
@@ -393,6 +393,7 @@
   var VERDICTS = ["ALL","TRUSTED","CAUTION","WARNING"];
   var DATA = [], CATS = ["ALL"];
   var S = { cat:"ALL", verdict:"ALL", verifiedOnly:false, open:null };
+  var readyResolve; var READY = new Promise(function(r){ readyResolve = r; });
 
   // ---- theme ----
   var tBtn = document.getElementById('themeBtn'), tIcon = document.getElementById('themeIcon');
@@ -405,7 +406,7 @@
   function dots(n){ return '<span class="f">'+DOT.repeat(n)+'</span><span class="e">'+DOT.repeat(5-n)+'</span>'; }
   function stClass(status){ return 'st-'+status; }
   function badgeText(t){
-    if(t.status==='warning') return 'VERIFIED WARNING';
+    if(t.status==='warning') return (t.verified ? 'VERIFIED WARNING' : 'WARNING');
     return (t.status.toUpperCase()) + (t.tagline ? ' · ' + t.tagline.toUpperCase() : '');
   }
 
@@ -496,7 +497,9 @@
     });
     counters(cat);
     render();
+    readyResolve(true);
   }).catch(function(){
+    readyResolve(false);
     document.getElementById('rows').innerHTML = '<div class="empty">Couldn\'t load the catalog just now — please refresh.</div>';
   });
 
@@ -538,7 +541,50 @@
       .catch(function(){ showOut('<div class="trymsg">Couldn\'t reach the door just now — please try again.</div>'); });
   }
   if(tForm){ tForm.addEventListener('submit', function(e){ e.preventDefault(); ask(tInput.value); }); }
+
+  // ---- Bridge for the WebMCP layer (site/webmcp.js) ----
+  // Agent tools don't just return JSON: they drive this same UI, so the
+  // person watching the page sees exactly what the agent asked for.
+  window.VettoryUI = {
+    ready: READY,
+    tools: function(){ return DATA.slice(); },
+    categories: function(){ return CATS.slice(1); },
+    find: function(name){
+      var q = String(name||'').toLowerCase().trim();
+      if(!q) return null;
+      var exact = DATA.filter(function(t){ return t.name.toLowerCase() === q; })[0];
+      return exact || DATA.filter(function(t){ return t.name.toLowerCase().indexOf(q) >= 0; })[0] || null;
+    },
+    search: function(need){
+      if(tInput) tInput.value = need;
+      ask(need);
+      if(tOut && tOut.scrollIntoView) tOut.scrollIntoView({behavior:'smooth', block:'center'});
+    },
+    openTool: function(name){
+      var t = window.VettoryUI.find(name);
+      if(!t) return null;
+      S.cat = 'ALL'; S.verdict = 'ALL'; S.verifiedOnly = false; S.open = t.name;
+      render();
+      var row = document.querySelector('.row[data-name="' + t.name + '"]');
+      if(row && row.scrollIntoView) row.scrollIntoView({behavior:'smooth', block:'center'});
+      return t;
+    },
+    setFilter: function(o){
+      o = o || {};
+      if(o.category){ var c = String(o.category).toUpperCase(); if(CATS.indexOf(c) >= 0) S.cat = c; }
+      if(o.verdict){ var v = String(o.verdict).toUpperCase(); if(VERDICTS.indexOf(v) >= 0) S.verdict = v; }
+      if(typeof o.verified_only === 'boolean') S.verifiedOnly = o.verified_only;
+      S.open = null; render();
+      var sec = document.getElementById('catalog');
+      if(sec && sec.scrollIntoView) sec.scrollIntoView({behavior:'smooth', block:'start'});
+      return DATA.filter(matches);
+    },
+    state: function(){ return { category:S.cat, verdict:S.verdict, verified_only:S.verifiedOnly }; }
+  };
 })();
 </script>
+
+<!-- The WebMCP layer: registers this site's tools with the agent. See site/webmcp.js -->
+<script src="/webmcp.js" defer></script>
 </body>
 </html>
