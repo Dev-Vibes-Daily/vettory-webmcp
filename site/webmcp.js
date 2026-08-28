@@ -95,10 +95,19 @@
       '#vty-agent .dot{width:8px;height:8px;border-radius:50%;background:var(--good,#2f7a55);flex:0 0 auto}' +
       '#vty-agent .dot.off{background:var(--text-faint,#7a8880)}' +
       '#vty-agent .t{font-size:12px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--text-primary,#142523)}' +
-      '#vty-agent .x{margin-left:auto;background:none;border:0;cursor:pointer;color:var(--text-faint,#7a8880);font-size:16px;line-height:1;padding:2px 4px}' +
+      '#vty-agent .x{background:none;border:0;cursor:pointer;color:var(--text-faint,#7a8880);font-size:16px;line-height:1;padding:2px 4px}' +
+      '#vty-agent .h{cursor:pointer}#vty-agent .h .n{margin-left:auto;font-family:var(--f-mono,monospace);font-size:11px;color:var(--text-faint,#7a8880)}' +
+      '#vty-agent.mini .content{display:none}#vty-agent.mini{width:auto}' +
+      '#vty-agent.mini .h{border-bottom:0}' +
       '#vty-agent .b{padding:10px 12px;font-size:12px;color:var(--text-muted,#5f6e66);line-height:1.5}' +
       '#vty-agent code{font-family:var(--f-mono,monospace);font-size:11px;color:var(--text-body,#4a5a52)}' +
       '#vty-agent .log{max-height:190px;overflow-y:auto;border-top:1px solid var(--hairline-soft,rgba(20,37,35,.08))}' +
+      '#vty-agent .reqs{border-top:1px solid var(--hairline-soft,rgba(20,37,35,.08));padding:10px 12px;font-size:12px}' +
+      '#vty-agent .reqs h4{margin:0 0 6px;font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--text-faint,#7a8880);font-weight:600}' +
+      '#vty-agent .reqs li{list-style:none;color:var(--text-primary,#142523);margin:0 0 4px;line-height:1.4}' +
+      '#vty-agent .reqs ul{margin:0;padding:0}' +
+      '#vty-agent .reqs a{display:inline-block;margin-top:6px;color:var(--good,#2f7a55);font-weight:600;text-decoration:none}' +
+      '#vty-agent .reqs a:hover{text-decoration:underline}' +
       '#vty-agent .e{padding:8px 12px;border-bottom:1px solid var(--hairline-soft,rgba(20,37,35,.06));font-size:12px;color:var(--text-body,#4a5a52)}' +
       '#vty-agent .e b{font-family:var(--f-mono,monospace);font-weight:500;color:var(--text-primary,#142523);font-size:11px}' +
       '#vty-agent .e span{display:block;color:var(--text-faint,#7a8880);margin-top:2px}' +
@@ -109,23 +118,52 @@
     panel.id = 'vty-agent';
     panel.setAttribute('aria-live', 'polite');
     panel.innerHTML =
-      '<div class="h"><span class="dot' + (ctx ? '' : ' off') + '"></span>' +
+      '<div class="h" role="button" tabindex="0" aria-expanded="false">' +
+      '<span class="dot' + (ctx ? '' : ' off') + '"></span>' +
       '<span class="t">Agent tools</span>' +
+      '<span class="n">5</span>' +
       '<button class="x" aria-label="Hide agent panel">&times;</button></div>' +
-      '<div class="b">' + (ctx
+      '<div class="content"><div class="b">' + (ctx
         ? 'Connected. This page registered <b>5 tools</b> on <code>' + surface + '</code>. ' +
           'Ask your agent to find a vetted tool, or to check one before it uses it.'
         : 'This page offers <b>5 WebMCP tools</b> to an agent, but no WebMCP-capable agent is present. ' +
           'Open it in ChatGPT\'s in-app browser, or in Chrome with <code>chrome://flags/#enable-webmcp-testing</code>.') +
-      '</div><div class="log"></div>';
+      '</div><div class="reqs" hidden><h4>Your agent asked Vettory to vet</h4><ul></ul>' +
+      '<a href="https://tally.so/r/eqO6JQ" target="_blank" rel="noopener">Send these to Vettory &#8594;</a></div>' +
+      '<div class="log"></div></div>';
     document.body.appendChild(panel);
     logBox = panel.querySelector('.log');
-    panel.querySelector('.x').addEventListener('click', function () { panel.remove(); });
+    // Starts collapsed so it never covers the page; opens when an agent acts.
+    panel.classList.add('mini');
+    var head = panel.querySelector('.h');
+    function toggle() {
+      panel.classList.toggle('mini');
+      head.setAttribute('aria-expanded', panel.classList.contains('mini') ? 'false' : 'true');
+    }
+    head.addEventListener('click', function (e) { if (!e.target.closest('.x')) toggle(); });
+    head.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+    });
+    panel.querySelector('.x').addEventListener('click', function (e) { e.stopPropagation(); panel.remove(); });
+  }
+
+  function showRequest(need, reason) {
+    if (!panel) return;
+    var box = panel.querySelector('.reqs');
+    if (!box) return;
+    box.hidden = false;
+    var li = document.createElement('li');
+    li.textContent = '\u00b7 ' + need + (reason ? ' — ' + reason : '');
+    box.querySelector('ul').appendChild(li);
   }
 
   function logCall(name, detail) {
     count++;
-    if (!logBox) return;
+    if (!panel || !logBox) return;
+    panel.classList.remove('mini');   // an agent is working — let the human watch
+    panel.querySelector('.h').setAttribute('aria-expanded', 'true');
+    var n = panel.querySelector('.h .n');
+    if (n) n.textContent = count + (count === 1 ? ' call' : ' calls');
     var e = document.createElement('div');
     e.className = 'e';
     e.innerHTML = '<b>' + name + '</b><span></span>';
@@ -363,6 +401,7 @@
         try { queue = JSON.parse(localStorage.getItem('vty_requests') || '[]'); } catch (e) { queue = []; }
         queue.unshift({ need: need, reason: reason || null, at: new Date().toISOString() });
         try { localStorage.setItem('vty_requests', JSON.stringify(queue.slice(0, 50))); } catch (e) { /* private mode */ }
+        showRequest(need, reason);
 
         return reply(
           'Recorded: "' + need + '"' + (reason ? ' (' + reason + ')' : '') + '\n\n' +
@@ -395,6 +434,23 @@
     }
     if (window.console) console.log('[Vettory] registered ' + TOOLS.length + ' WebMCP tools on ' + surface);
   }
+
+  // Inspectable from the console, so the tools can be read and exercised in a
+  // plain browser without an agent attached:
+  //   VettoryWebMCP.list()
+  //   await VettoryWebMCP.call('check_tool_trust', { name: 'Chroma' })
+  window.VettoryWebMCP = {
+    surface: function () { return surface; },
+    available: function () { return !!ctx; },
+    list: function () {
+      return TOOLS.map(function (t) { return { name: t.name, description: t.description, inputSchema: t.inputSchema }; });
+    },
+    call: function (name, args) {
+      var t = TOOLS.filter(function (x) { return x.name === name; })[0];
+      if (!t) return Promise.reject(new Error('No such tool: ' + name));
+      return Promise.resolve(t.execute(args || {}));
+    }
+  };
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();

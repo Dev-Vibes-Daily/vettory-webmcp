@@ -52,6 +52,7 @@ function record(t) {
     verified: t.verified === true, // true only if a person has personally verified this tool
     checked: t.checked || null, // date a person last looked at it
     tagline: t.tagline,
+    oneLine: t.oneLine || null,
     scores,
     best_for: t.best_for,
     watch_out: t.watch_out,
