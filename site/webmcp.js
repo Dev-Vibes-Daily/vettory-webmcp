@@ -332,7 +332,8 @@
         properties: {
           category: {
             type: 'string',
-            description: 'Category to show, or "ALL". Examples: EMAIL, PAYMENTS, SEARCH, MEMORY, DOCS, SCHEDULING, MESSAGING.'
+            description: 'Category to show. Must be one of: ALL, SCHEDULING, EMAIL, MESSAGING, ' +
+                         'SEARCH, MEMORY, DOCUMENTS, PAYMENTS. Any other value is ignored.'
           },
           verdict: {
             type: 'string',

@@ -123,7 +123,7 @@ back to **`navigator.modelContext`** for Chrome 149's origin trial (deprecated i
 matching the response shape each surface expects. Registration failures are caught, so a
 browser without WebMCP gets a perfectly normal website.
 
-Everything is same-origin and inline — no external scripts — which keeps it inside the
+Everything is served same-origin — no third-party scripts — which keeps it inside the
 site's existing Content-Security-Policy.
 
 ## Run it locally
