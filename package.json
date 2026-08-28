@@ -1,0 +1,9 @@
+{
+  "name": "vettory-webmcp",
+  "version": "0.2.0",
+  "description": "Vettory for WebMCP - a trust layer AI agents can query in the page, before they act.",
+  "devDependencies": {
+    "wrangler": "4.120.1"
+  },
+  "license": "MIT"
+}

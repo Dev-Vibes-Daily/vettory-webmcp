@@ -1,0 +1,566 @@
+{
+  "name": "Vettory Catalog",
+  "version": "0.2",
+  "updated": "2026-08-11",
+  "rubric": [
+    "trust",
+    "fit",
+    "ease",
+    "reliability",
+    "reach",
+    "cost"
+  ],
+  "categories": [
+    {
+      "category": "Scheduling & Reminders",
+      "short": "SCHEDULING",
+      "need_keywords": [
+        "schedule",
+        "reminder",
+        "recurring",
+        "cron",
+        "reach out",
+        "notify on time",
+        "timer",
+        "run on time"
+      ],
+      "tools": [
+        {
+          "name": "Claude Native Scheduled Tasks",
+          "status": "trusted",
+          "tagline": "start here",
+          "oneLine": "Built-in recurring tasks with push notifications. No code.",
+          "scores": [
+            5,
+            4,
+            5,
+            5,
+            4,
+            5
+          ],
+          "best_for": "An agent that reaches out on a schedule with zero setup.",
+          "watch_out": "Needs a paid Claude plan; time can drift at daylight-saving.",
+          "source": "https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork",
+          "verified": true,
+          "checked": "11 Aug 2026",
+          "history": "Proven in the field — powers Eve's 5 PM check-in. No status change since first vetting."
+        },
+        {
+          "name": "Twilio",
+          "status": "trusted",
+          "tagline": "needs a builder",
+          "oneLine": "The industry standard for real SMS, WhatsApp and voice.",
+          "scores": [
+            5,
+            5,
+            2,
+            5,
+            5,
+            4
+          ],
+          "best_for": "When an agent needs to actually text a person, two-way, worldwide.",
+          "watch_out": "US texting needs carrier registration; publicly reported breaches (2022 phishing, 2024 Authy) have since been remediated.",
+          "source": "https://www.twilio.com/docs/ai/mcp",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "Breach history reviewed and judged remediated. Trust held at 5."
+        }
+      ]
+    },
+    {
+      "category": "Email",
+      "short": "EMAIL",
+      "need_keywords": [
+        "email",
+        "send mail",
+        "send an email",
+        "transactional email",
+        "receipt",
+        "password reset",
+        "notify by email"
+      ],
+      "tools": [
+        {
+          "name": "Resend",
+          "status": "trusted",
+          "tagline": "best for most",
+          "oneLine": "Modern, developer-first email with a hosted connector. Nothing to install.",
+          "scores": [
+            5,
+            5,
+            4,
+            4,
+            3,
+            5
+          ],
+          "best_for": "A clean, modern, agent-ready way to send email.",
+          "watch_out": "Email only; sending-domain DNS setup takes a few steps.",
+          "source": "https://resend.com/security",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "SOC 2 and GDPR confirmed. Free tier steady at 3,000 emails/month."
+        },
+        {
+          "name": "Postmark",
+          "status": "trusted",
+          "tagline": "best deliverability",
+          "oneLine": "Famous for landing mail in the inbox — use only the official package.",
+          "scores": [
+            5,
+            5,
+            4,
+            5,
+            3,
+            4
+          ],
+          "best_for": "When reaching the inbox reliably matters most.",
+          "watch_out": "In Sept 2025 a malicious npm copy named `postmark-mcp` secretly BCC'd every email to an attacker — install only Postmark's own official server (github.com/ActiveCampaign/postmark-mcp). Free tier is 100 emails/mo.",
+          "source": "https://postmarkapp.com/security",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "Sept 2025: an impostor package was found in the wild. Official package pinned in the catalog."
+        },
+        {
+          "name": "SendGrid",
+          "status": "caution",
+          "tagline": "mind the caveats",
+          "oneLine": "Huge-scale, battle-tested — but no official agent connector.",
+          "scores": [
+            4,
+            5,
+            3,
+            5,
+            3,
+            3
+          ],
+          "best_for": "High-volume sending on a proven platform.",
+          "watch_out": "No official connector; free tier is now a 60-day trial; not self-serve HIPAA; parent company (Twilio) has past breaches, since remediated.",
+          "source": "https://sendgrid.com/en-us/policies/security",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "Downgraded to Caution when the permanent free tier became a trial."
+        }
+      ]
+    },
+    {
+      "category": "Team Messaging",
+      "short": "MESSAGING",
+      "need_keywords": [
+        "slack",
+        "team",
+        "channel",
+        "notify team",
+        "alert",
+        "approval",
+        "message my team"
+      ],
+      "tools": [
+        {
+          "name": "Slack",
+          "status": "trusted",
+          "tagline": "internal teams",
+          "oneLine": "Post an agent's messages, alerts and approvals into channels and DMs.",
+          "scores": [
+            5,
+            4,
+            4,
+            5,
+            3,
+            4
+          ],
+          "best_for": "Putting an agent's output where a team already works.",
+          "watch_out": "Internal only; connector needs an internal or listed app.",
+          "source": "https://docs.slack.dev/ai/slack-mcp-server/",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "Official connector generally available since Feb 2026 — score raised on reliability."
+        }
+      ]
+    },
+    {
+      "category": "Live Web Search",
+      "short": "SEARCH",
+      "need_keywords": [
+        "web search",
+        "search the web",
+        "research",
+        "look up",
+        "find online",
+        "real-time information",
+        "browse"
+      ],
+      "tools": [
+        {
+          "name": "Tavily",
+          "status": "trusted",
+          "tagline": "start here",
+          "oneLine": "The search layer most agent frameworks reach for first. Paste one key.",
+          "scores": [
+            5,
+            5,
+            5,
+            4,
+            4,
+            5
+          ],
+          "best_for": "Searching the web with the least setup and a real free tier.",
+          "watch_out": "Reportedly acquired in early 2026; draws on other providers, not its own index.",
+          "source": "https://tavily.com/",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "Feb 2026 acquisition flagged as a watch item; re-check scheduled quarterly."
+        },
+        {
+          "name": "Exa",
+          "status": "trusted",
+          "tagline": "search by meaning",
+          "oneLine": "Its own index, finding things by meaning rather than keywords.",
+          "scores": [
+            5,
+            5,
+            4,
+            5,
+            5,
+            3
+          ],
+          "best_for": "Finding the exact right thing by meaning, not keywords.",
+          "watch_out": "Pricier per search; needs a little tuning.",
+          "source": "https://exa.ai/",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "SOC 2 and HIPAA confirmed. Well funded; no change since first vetting."
+        },
+        {
+          "name": "Linkup",
+          "status": "trusted",
+          "tagline": "EU-friendly",
+          "oneLine": "Privacy- and EU-minded search, easiest install, most generous free tier.",
+          "scores": [
+            5,
+            4,
+            5,
+            3,
+            4,
+            5
+          ],
+          "best_for": "EU compliance, privacy, or a bigger free allowance.",
+          "watch_out": "Youngest/smallest; a little vendor-longevity risk.",
+          "source": "https://www.linkup.so/",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "Keeps no data by default — noted against their SOC 2 report."
+        },
+        {
+          "name": "Perplexity",
+          "status": "trusted",
+          "tagline": "cited answers",
+          "oneLine": "Returns ready-made cited answers, not just links.",
+          "scores": [
+            4,
+            4,
+            5,
+            5,
+            4,
+            3
+          ],
+          "best_for": "Cited, ready-to-use answers with a documented compliance posture.",
+          "watch_out": "DPA/BAA are Enterprise/sales; US-hosted; self-declared; token pricing.",
+          "source": "https://docs.perplexity.ai/docs/resources/privacy-security",
+          "verified": true,
+          "checked": "11 Aug 2026",
+          "history": "Human-verified 22 Jul 2026: compliance claims read in full and found self-declared."
+        }
+      ]
+    },
+    {
+      "category": "Memory & Knowledge",
+      "short": "MEMORY",
+      "need_keywords": [
+        "memory",
+        "remember",
+        "recall",
+        "knowledge",
+        "vector",
+        "embeddings",
+        "rag",
+        "retrieve"
+      ],
+      "tools": [
+        {
+          "name": "Mem0",
+          "status": "trusted",
+          "tagline": "start here",
+          "oneLine": "A ready-to-use memory layer — no database to assemble yourself.",
+          "scores": [
+            4,
+            5,
+            5,
+            4,
+            4,
+            5
+          ],
+          "best_for": "Giving an agent memory without wiring up infrastructure.",
+          "watch_out": "Newer company; SOC 2 Type II still in progress.",
+          "source": "https://mem0.ai/security",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "Audit-in-progress noted; will re-score when SOC 2 Type II lands."
+        },
+        {
+          "name": "Zep",
+          "status": "trusted",
+          "tagline": "remembers over time",
+          "oneLine": "Tracks how facts change, so an agent knows what's true now.",
+          "scores": [
+            4,
+            5,
+            4,
+            3,
+            4,
+            4
+          ],
+          "best_for": "When facts change over time (preferences, statuses).",
+          "watch_out": "Small/early-stage; self-hosted version retired.",
+          "source": "https://www.getzep.com/",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "Cost score lowered when the free self-hosted tier was retired."
+        },
+        {
+          "name": "Pinecone",
+          "status": "trusted",
+          "tagline": "managed store",
+          "oneLine": "The most turnkey vector database. Fully managed and certified.",
+          "scores": [
+            5,
+            4,
+            5,
+            5,
+            5,
+            4
+          ],
+          "best_for": "A rock-solid managed vector store to build memory on.",
+          "watch_out": "It's a database, not a memory layer; reportedly weighing a sale.",
+          "source": "https://security.pinecone.io/",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "SOC 2, ISO and HIPAA confirmed. Possible sale flagged as a watch item."
+        },
+        {
+          "name": "Weaviate",
+          "status": "trusted",
+          "tagline": "at scale",
+          "oneLine": "Feature-rich open-source vector database, strong at scale.",
+          "scores": [
+            5,
+            5,
+            4,
+            5,
+            5,
+            3
+          ],
+          "best_for": "A feature-rich open-source vector DB, strong at scale.",
+          "watch_out": "No permanent free managed tier.",
+          "source": "https://weaviate.io/",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "SOC 2 Type II confirmed. No status change."
+        },
+        {
+          "name": "Chroma",
+          "status": "warning",
+          "tagline": "active security flaw",
+          "oneLine": "Confirmed maximum-severity remote-takeover flaw, still unpatched.",
+          "scores": [
+            1,
+            4,
+            5,
+            3,
+            4,
+            5
+          ],
+          "best_for": "Local prototyping only — use the Rust version, never expose to the internet.",
+          "watch_out": "An official advisory (CVE-2026-45829) rates a pre-login remote-takeover bug 10.0/10. Still unpatched as of the latest release (v1.5.9) — the vendor shipped a new version without fixing it. Use the Rust server; never expose the Python server to the internet.",
+          "source": "https://nvd.nist.gov/vuln/detail/CVE-2026-45829",
+          "verified": true,
+          "checked": "11 Aug 2026",
+          "history": "Human-verified 22 Jul 2026 (CVE-2026-45829, CVSS 10.0). Re-checked 11 Aug 2026: still unpatched — vendor released v1.5.9 (up from 1.5.8) but did not fix the flaw. Warning stands; re-checking until a patch ships."
+        }
+      ]
+    },
+    {
+      "category": "Documents & Files",
+      "short": "DOCUMENTS",
+      "need_keywords": [
+        "document",
+        "pdf",
+        "parse",
+        "extract",
+        "read file",
+        "ocr",
+        "tables",
+        "scan"
+      ],
+      "tools": [
+        {
+          "name": "LlamaParse",
+          "status": "trusted",
+          "tagline": "start here",
+          "oneLine": "Turns messy PDFs, scans and Office files into clean text.",
+          "scores": [
+            5,
+            5,
+            5,
+            4,
+            5,
+            4
+          ],
+          "best_for": "Reading documents reliably with no infrastructure.",
+          "watch_out": "No free self-host; HIPAA enterprise-only.",
+          "source": "https://www.llamaindex.ai/",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "Generous free tier verified. No status change."
+        },
+        {
+          "name": "Reducto",
+          "status": "trusted",
+          "tagline": "best on messy docs",
+          "oneLine": "Vision-first reader for the hardest files — tables, charts, handwriting.",
+          "scores": [
+            5,
+            5,
+            4,
+            4,
+            4,
+            3
+          ],
+          "best_for": "Complex, high-stakes documents where accuracy is everything.",
+          "watch_out": "No free self-host; accuracy scores are vendor-run.",
+          "source": "https://reducto.ai/",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "SOC 2, HIPAA and private deployment confirmed. Vendor-run benchmarks noted."
+        },
+        {
+          "name": "Docling",
+          "status": "trusted",
+          "tagline": "free & private",
+          "oneLine": "Free, open-source, runs entirely on your own machine.",
+          "scores": [
+            4,
+            5,
+            2,
+            5,
+            5,
+            5
+          ],
+          "best_for": "Parsing documents privately and for free (needs some code).",
+          "watch_out": "Not turnkey; needs technical setup.",
+          "source": "https://github.com/docling-project/docling",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "Now under the Linux Foundation — governance risk lowered."
+        },
+        {
+          "name": "Unstructured",
+          "status": "trusted",
+          "tagline": "widest formats",
+          "oneLine": "The broadest range of file types, with dozens of source connectors.",
+          "scores": [
+            4,
+            4,
+            3,
+            4,
+            5,
+            5
+          ],
+          "best_for": "Pipelines ingesting many file types from many sources.",
+          "watch_out": "Use the newer 'Transform' connector; HIPAA not listed.",
+          "source": "https://unstructured.io/",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "Deprecated connector flagged; entry updated to the Transform connector."
+        }
+      ]
+    },
+    {
+      "category": "Payments",
+      "short": "PAYMENTS",
+      "need_keywords": [
+        "payment",
+        "payments",
+        "pay",
+        "accept payments",
+        "send money",
+        "checkout",
+        "billing",
+        "charge",
+        "invoice",
+        "payout"
+      ],
+      "tools": [
+        {
+          "name": "Stripe",
+          "status": "trusted",
+          "tagline": "start here",
+          "oneLine": "An official agent toolkit and MCP server, from a heavily-audited processor.",
+          "scores": [
+            5,
+            5,
+            4,
+            5,
+            5,
+            5
+          ],
+          "best_for": "Handling real payments from a well-audited, widely-used processor.",
+          "watch_out": "Primarily lets an agent RECEIVE money; agent-spending (Treasury) is still in preview. Toolkit package names are mid-restructure.",
+          "source": "https://docs.stripe.com/mcp",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "Published 22 Jul 2026 as the trusted anchor for Payments (PCI L1, SOC 2, ISO 27001)."
+        },
+        {
+          "name": "PayPal",
+          "status": "caution",
+          "tagline": "mind the security history",
+          "oneLine": "Official toolkit + MCP across a huge network; does both directions.",
+          "scores": [
+            3,
+            5,
+            4,
+            4,
+            5,
+            5
+          ],
+          "best_for": "Sending and receiving across a huge global network.",
+          "watch_out": "A 2022 breach reportedly exposed some customers' Social Security numbers and drew a reported ~$2M New York regulator settlement. Python toolkit support still pending.",
+          "source": "https://developer.paypal.com/ai-tools/mcp-server",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "Published as Caution: 2022 SSN breach and $2M NY fine on record."
+        },
+        {
+          "name": "x402",
+          "status": "caution",
+          "tagline": "crypto rails",
+          "oneLine": "Open HTTP micropayment protocol (Coinbase/Visa/Stripe-backed). Crypto only.",
+          "scores": [
+            3,
+            4,
+            3,
+            3,
+            3,
+            5
+          ],
+          "best_for": "HTTP-native micropayments between agents and services.",
+          "watch_out": "Crypto/stablecoin settlement only (no fiat yet). A reported signature-bypass advisory and a security scan flagging high-risk issues across many ecosystem projects; real demand still thin.",
+          "source": "https://github.com/coinbase/x402",
+          "verified": false,
+          "checked": "11 Aug 2026",
+          "history": "Published as Caution: security-scan flags across the ecosystem; strong backing."
+        }
+      ]
+    }
+  ]
+}
