@@ -61,6 +61,40 @@ function record(t) {
   };
 }
 
+function esc(s) {
+  return String(s == null ? "" : s).replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+  );
+}
+
+// The catalog is normally drawn by JavaScript from /api/catalog. Anything that
+// reads the raw HTML instead — an agent browsing the page, a crawler, a link
+// preview — would otherwise see only "Loading the catalog…" and none of the
+// verdicts. So the Worker renders the same catalog into the page server-side.
+// Browsers with JavaScript replace it with the interactive version; everything
+// else still gets every verdict, in text.
+function catalogHTML() {
+  let out = '<div class="prerender">';
+  for (const c of catalog.categories) {
+    for (const t of c.tools) {
+      const scores = RUBRIC.map((k, i) => esc(k) + " " + t.scores[i] + "/5").join(" \u00b7 ");
+      out +=
+        '<article class="pre-tool">' +
+        "<h3>" + esc(t.name) + " \u2014 " + esc(String(t.status).toUpperCase()) + "</h3>" +
+        '<p class="pre-meta">' + esc(c.category) + " \u00b7 " +
+        (t.verified ? "human-verified by a person at Vettory" : "rubric-scored; not personally verified") +
+        (t.checked ? " \u00b7 last checked " + esc(t.checked) : "") + "</p>" +
+        (t.oneLine ? "<p>" + esc(t.oneLine) + "</p>" : "") +
+        (t.best_for ? "<p><b>Best for:</b> " + esc(t.best_for) + "</p>" : "") +
+        (t.watch_out ? "<p><b>Watch out:</b> " + esc(t.watch_out) + "</p>" : "") +
+        "<p><b>Rubric:</b> " + scores + "</p>" +
+        (t.source ? '<p><a href="' + esc(t.source) + '" rel="noopener">Source</a></p>' : "") +
+        "</article>";
+    }
+  }
+  return out + "</div>";
+}
+
 function json(obj, status = 200) {
   return new Response(JSON.stringify(obj, null, 2), {
     status,
@@ -169,7 +203,13 @@ export default {
       const res = await env.ASSETS.fetch(request);
       const headers = new Headers(res.headers);
       for (const [k, v] of Object.entries(SECURITY_HEADERS)) headers.set(k, v);
-      return new Response(res.body, { status: res.status, statusText: res.statusText, headers });
+      const out = new Response(res.body, { status: res.status, statusText: res.statusText, headers });
+      if ((res.headers.get("content-type") || "").includes("text/html")) {
+        return new HTMLRewriter()
+          .on("#rows", { element(el) { el.setInnerContent(catalogHTML(), { html: true }); } })
+          .transform(out);
+      }
+      return out;
     }
     return new Response("Not found", { status: 404 });
   },

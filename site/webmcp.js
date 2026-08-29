@@ -31,11 +31,18 @@
   // Chrome 149's origin trial shipped navigator.modelContext, which is
   // deprecated from Chrome 150. Register on whichever this browser exposes.
   var ctx = null, surface = null;
-  if (typeof document !== 'undefined' && document.modelContext && document.modelContext.registerTool) {
-    ctx = document.modelContext; surface = 'document.modelContext';
-  } else if (typeof navigator !== 'undefined' && navigator.modelContext && navigator.modelContext.registerTool) {
-    ctx = navigator.modelContext; surface = 'navigator.modelContext';
+
+  function findSurface() {
+    if (ctx) return true;
+    if (typeof document !== 'undefined' && document.modelContext && document.modelContext.registerTool) {
+      ctx = document.modelContext; surface = 'document.modelContext'; return true;
+    }
+    if (typeof navigator !== 'undefined' && navigator.modelContext && navigator.modelContext.registerTool) {
+      ctx = navigator.modelContext; surface = 'navigator.modelContext'; return true;
+    }
+    return false;
   }
+  findSurface();
 
   // The older navigator surface took a plain string back; the current spec
   // takes a structured content array. Match whichever one we registered on.
@@ -180,6 +187,23 @@
       ));
       ul.appendChild(li);
     });
+  }
+
+  // The panel is built before an agent may have attached, so let it update.
+  function refreshPanel() {
+    if (!panel) return;
+    var dot = panel.querySelector('.dot');
+    var body = panel.querySelector('.b');
+    if (dot) dot.className = 'dot' + (ctx ? '' : ' off');
+    if (body) {
+      body.innerHTML = ctx
+        ? 'Connected. This page registered <b>' + TOOLS.length + ' tools</b> on <code>' + surface + '</code>. ' +
+          'Ask your agent to find a vetted tool, or to check one before it uses it.'
+        : 'This page offers <b>' + TOOLS.length + ' WebMCP tools</b> to an agent, but no WebMCP-capable agent ' +
+          'is present yet. Open it in ChatGPT\'s in-app browser, or in Chrome with ' +
+          '<code>chrome://flags/#enable-webmcp-testing</code>. This page keeps watching, so if an agent ' +
+          'attaches later the tools register then.';
+    }
   }
 
   function logCall(name, detail) {
@@ -650,12 +674,11 @@
 
   // --- 5. Register ----------------------------------------------------------
 
-  async function boot() {
-    UI = window.VettoryUI || null;
-    buildPanel();
+  var registered = false;
 
-    if (!ctx) return; // No agent present — the page still works normally.
-
+  async function registerAll() {
+    if (registered || !ctx) return false;
+    registered = true;
     for (var i = 0; i < TOOLS.length; i++) {
       try {
         await ctx.registerTool(TOOLS[i]);
@@ -665,6 +688,33 @@
       }
     }
     if (window.console) console.log('[Vettory] registered ' + TOOLS.length + ' WebMCP tools on ' + surface);
+    refreshPanel();
+    return true;
+  }
+
+  async function boot() {
+    UI = window.VettoryUI || null;
+    buildPanel();
+
+    if (findSurface()) { await registerAll(); return; }
+
+    // The API is not always there at page load. An agent can attach to a page
+    // that is already open — ChatGPT's in-app browser can expose the interface
+    // when the agent engages rather than when the document loads. A one-shot
+    // check at boot would miss that entirely and register nothing, so keep
+    // looking, and look again whenever the user comes back to the tab.
+    var tries = 0;
+    var timer = setInterval(function () {
+      tries++;
+      if (findSurface()) { clearInterval(timer); registerAll(); return; }
+      if (tries > 600) clearInterval(timer); // ~5 minutes, then stop.
+    }, 500);
+    document.addEventListener('visibilitychange', function () {
+      if (!document.hidden && findSurface()) { clearInterval(timer); registerAll(); }
+    });
+    window.addEventListener('focus', function () {
+      if (findSurface()) { clearInterval(timer); registerAll(); }
+    });
   }
 
   // Inspectable from the console, so the tools can be read and exercised in a

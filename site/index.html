@@ -253,6 +253,15 @@
     .row .rubriccell{order:4;} .row .checkedcell{order:5;} .row .chev{order:2;}
     .panel.show{grid-template-columns:1fr;}
   }
+  /* Server-rendered catalog: what agents, crawlers and no-JS visitors see.
+     JavaScript replaces this with the interactive table on load. */
+  .prerender{display:grid;gap:14px}
+  .pre-tool{border:1px solid var(--hairline);border-radius:10px;padding:14px 16px;background:var(--surface-card)}
+  .pre-tool h3{font-family:var(--f-mono);font-size:13px;letter-spacing:.02em;margin:0 0 4px;color:var(--text-primary)}
+  .pre-tool p{margin:4px 0;font-size:13px;line-height:1.55;color:var(--text-body)}
+  .pre-tool .pre-meta{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-faint)}
+  .pre-tool b{color:var(--text-primary)}
+  .pre-tool a{color:var(--gold)}
 </style>
 </head>
 <body>
