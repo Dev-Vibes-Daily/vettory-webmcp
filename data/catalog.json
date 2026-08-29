@@ -1,7 +1,7 @@
 {
   "name": "Vettory Catalog",
   "version": "0.2",
-  "updated": "2026-08-11",
+  "updated": "2026-08-28",
   "rubric": [
     "trust",
     "fit",
@@ -39,11 +39,17 @@
             5
           ],
           "best_for": "An agent that reaches out on a schedule with zero setup.",
-          "watch_out": "Needs a paid Claude plan; time can drift at daylight-saving.",
+          "watch_out": "Needs a paid Claude plan (Pro, Max, Team or Enterprise), with per-plan daily run limits; time can drift at daylight-saving.",
           "source": "https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork",
           "verified": true,
-          "checked": "11 Aug 2026",
-          "history": "Proven in the field — powers Eve's 5 PM check-in. No status change since first vetting."
+          "checked": "28 Aug 2026",
+          "history": "Proven in the field — powers Eve's 5 PM check-in. Re-checked 28 Aug 2026: still paid-plans-only (Pro 5, Max 15, Team/Enterprise 25 runs a day) and now runs server-side with no device required.",
+          "sources": [
+            {
+              "label": "Anthropic — schedule recurring tasks",
+              "url": "https://support.claude.com/en/articles/13854387-schedule-recurring-tasks-in-claude-cowork"
+            }
+          ]
         },
         {
           "name": "Twilio",
@@ -62,8 +68,8 @@
           "watch_out": "US texting needs carrier registration; publicly reported breaches (2022 phishing, 2024 Authy) have since been remediated.",
           "source": "https://www.twilio.com/docs/ai/mcp",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "Breach history reviewed and judged remediated. Trust held at 5."
+          "checked": "28 Aug 2026",
+          "history": "Breach history reviewed and judged remediated. Trust held at 5. Re-checked 28 Aug 2026: incident sweep found no new material change."
         }
       ]
     },
@@ -97,8 +103,8 @@
           "watch_out": "Email only; sending-domain DNS setup takes a few steps.",
           "source": "https://resend.com/security",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "SOC 2 and GDPR confirmed. Free tier steady at 3,000 emails/month."
+          "checked": "28 Aug 2026",
+          "history": "SOC 2 and GDPR confirmed. Free tier steady at 3,000 emails/month. Re-checked 28 Aug 2026: incident sweep found no new material change."
         },
         {
           "name": "Postmark",
@@ -117,8 +123,14 @@
           "watch_out": "In Sept 2025 a malicious npm copy named `postmark-mcp` secretly BCC'd every email to an attacker — install only Postmark's own official server (github.com/ActiveCampaign/postmark-mcp). Free tier is 100 emails/mo.",
           "source": "https://postmarkapp.com/security",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "Sept 2025: an impostor package was found in the wild. Official package pinned in the catalog."
+          "checked": "28 Aug 2026",
+          "history": "Sept 2025: an impostor package was found in the wild. Official package pinned in the catalog. Re-checked 28 Aug 2026: the impostor incident remains as documented by Snyk; no new issue found.",
+          "sources": [
+            {
+              "label": "Snyk — malicious postmark-mcp on npm",
+              "url": "https://snyk.io/blog/malicious-mcp-server-on-npm-postmark-mcp-harvests-emails/"
+            }
+          ]
         },
         {
           "name": "SendGrid",
@@ -134,11 +146,17 @@
             3
           ],
           "best_for": "High-volume sending on a proven platform.",
-          "watch_out": "No official connector; free tier is now a 60-day trial; not self-serve HIPAA; parent company (Twilio) has past breaches, since remediated.",
+          "watch_out": "No official connector; the permanent free tier was retired on 27 May 2025 and replaced by a 60-day trial (100 emails/day); not self-serve HIPAA; parent company (Twilio) has past breaches, since remediated.",
           "source": "https://sendgrid.com/en-us/policies/security",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "Downgraded to Caution when the permanent free tier became a trial."
+          "checked": "28 Aug 2026",
+          "history": "Downgraded to Caution when the permanent free tier became a trial. Re-checked 28 Aug 2026: the 60-day trial still stands.",
+          "sources": [
+            {
+              "label": "Twilio changelog — SendGrid free plan changes",
+              "url": "https://www.twilio.com/en-us/changelog/sendgrid-free-plan"
+            }
+          ]
         }
       ]
     },
@@ -172,8 +190,14 @@
           "watch_out": "Internal only; connector needs an internal or listed app.",
           "source": "https://docs.slack.dev/ai/slack-mcp-server/",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "Official connector generally available since Feb 2026 — score raised on reliability."
+          "checked": "28 Aug 2026",
+          "history": "Official Slack-hosted MCP server generally available since 17 Feb 2026 — score raised on reliability. Re-checked 28 Aug 2026: confirmed; Okta access control for the MCP server added Aug 2026.",
+          "sources": [
+            {
+              "label": "Slack MCP server docs",
+              "url": "https://docs.slack.dev/ai/slack-mcp-server/"
+            }
+          ]
         }
       ]
     },
@@ -204,11 +228,17 @@
             5
           ],
           "best_for": "Searching the web with the least setup and a real free tier.",
-          "watch_out": "Reportedly acquired in early 2026; draws on other providers, not its own index.",
+          "watch_out": "Acquired by Nebius — announced 10 Feb 2026; the service continues under the Tavily brand. Draws on other providers, not its own index.",
           "source": "https://tavily.com/",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "Feb 2026 acquisition flagged as a watch item; re-check scheduled quarterly."
+          "checked": "28 Aug 2026",
+          "history": "Acquisition flagged at first vetting. Re-checked 28 Aug 2026: confirmed against Nebius's own announcement.",
+          "sources": [
+            {
+              "label": "Nebius — agreement to acquire Tavily, 10 Feb 2026",
+              "url": "https://nebius.com/newsroom/nebius-announces-agreement-to-acquire-tavily-to-add-agentic-search-to-its-ai-cloud-platform"
+            }
+          ]
         },
         {
           "name": "Exa",
@@ -227,8 +257,8 @@
           "watch_out": "Pricier per search; needs a little tuning.",
           "source": "https://exa.ai/",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "SOC 2 and HIPAA confirmed. Well funded; no change since first vetting."
+          "checked": "28 Aug 2026",
+          "history": "SOC 2 and HIPAA confirmed. Well funded; no change since first vetting. Re-checked 28 Aug 2026: incident sweep found no new material change."
         },
         {
           "name": "Linkup",
@@ -247,8 +277,8 @@
           "watch_out": "Youngest/smallest; a little vendor-longevity risk.",
           "source": "https://www.linkup.so/",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "Keeps no data by default — noted against their SOC 2 report."
+          "checked": "28 Aug 2026",
+          "history": "Keeps no data by default — noted against their SOC 2 report. Re-checked 28 Aug 2026: incident sweep found no new material change."
         },
         {
           "name": "Perplexity",
@@ -264,11 +294,21 @@
             3
           ],
           "best_for": "Cited, ready-to-use answers with a documented compliance posture.",
-          "watch_out": "DPA/BAA are Enterprise/sales; US-hosted; self-declared; token pricing.",
+          "watch_out": "DPA/BAA are Enterprise/sales; US-hosted; self-declared; token pricing. Disclosure: their Comet browser — a different product from this search API — had prompt-injection hijack disclosures in 2026 (Zenity Labs, LayerX), and an unproven class action over data sharing was filed in March 2026.",
           "source": "https://docs.perplexity.ai/docs/resources/privacy-security",
           "verified": true,
-          "checked": "11 Aug 2026",
-          "history": "Human-verified 22 Jul 2026: compliance claims read in full and found self-declared."
+          "checked": "28 Aug 2026",
+          "history": "Human-verified 22 Jul 2026: compliance claims read in full and found self-declared. Re-checked 28 Aug 2026: no breach of the search API found; the Comet vulnerabilities and the pending lawsuit are disclosed above for transparency, and concern a separate product.",
+          "sources": [
+            {
+              "label": "Perplexity privacy & security docs",
+              "url": "https://docs.perplexity.ai/docs/resources/privacy-security"
+            },
+            {
+              "label": "Zenity Labs — Comet agent-hijack disclosure",
+              "url": "https://zenity.io/company-overview/newsroom/company-news/zenity-labs-discloses-pleasefix-perplexedagent-vulnerability"
+            }
+          ]
         }
       ]
     },
@@ -300,11 +340,17 @@
             5
           ],
           "best_for": "Giving an agent memory without wiring up infrastructure.",
-          "watch_out": "Newer company; SOC 2 Type II still in progress.",
+          "watch_out": "Newer company. Their trust centre lists SOC 2 Type 1 — Type II is not shown — and HIPAA as a self-attestation rather than a certification.",
           "source": "https://mem0.ai/security",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "Audit-in-progress noted; will re-score when SOC 2 Type II lands."
+          "checked": "28 Aug 2026",
+          "history": "Audit-in-progress noted at first vetting. Re-checked 28 Aug 2026 against Mem0's own trust centre: SOC 2 Type 1 and a HIPAA self-attestation are listed; Type II still is not. Will re-score when Type II lands.",
+          "sources": [
+            {
+              "label": "Mem0 Trust Center",
+              "url": "https://trust.mem0.ai/"
+            }
+          ]
         },
         {
           "name": "Zep",
@@ -320,11 +366,17 @@
             4
           ],
           "best_for": "When facts change over time (preferences, statuses).",
-          "watch_out": "Small/early-stage; self-hosted version retired.",
+          "watch_out": "Small/early-stage; the self-hosted Community Edition was retired in 2025 — open-source work continues as Graphiti.",
           "source": "https://www.getzep.com/",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "Cost score lowered when the free self-hosted tier was retired."
+          "checked": "28 Aug 2026",
+          "history": "Cost score lowered when the free self-hosted tier was retired. Re-checked 28 Aug 2026: confirmed against Zep's own announcement.",
+          "sources": [
+            {
+              "label": "Zep — end of Community Edition support",
+              "url": "https://blog.getzep.com/announcing-a-new-direction-for-zeps-open-source-strategy/"
+            }
+          ]
         },
         {
           "name": "Pinecone",
@@ -340,11 +392,21 @@
             4
           ],
           "best_for": "A rock-solid managed vector store to build memory on.",
-          "watch_out": "It's a database, not a memory layer; reportedly weighing a sale.",
+          "watch_out": "It's a database, not a memory layer; press reports in Aug 2025 said it was weighing a sale.",
           "source": "https://security.pinecone.io/",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "SOC 2, ISO and HIPAA confirmed. Possible sale flagged as a watch item."
+          "checked": "28 Aug 2026",
+          "history": "SOC 2, ISO and HIPAA confirmed. Re-checked 28 Aug 2026: no sale announced — the reporting still dates to Aug 2025.",
+          "sources": [
+            {
+              "label": "Pinecone security",
+              "url": "https://security.pinecone.io/"
+            },
+            {
+              "label": "Reported sale talks (Aug 2025)",
+              "url": "https://www.calcalistech.com/ctechnews/article/rz31q82b5"
+            }
+          ]
         },
         {
           "name": "Weaviate",
@@ -363,8 +425,8 @@
           "watch_out": "No permanent free managed tier.",
           "source": "https://weaviate.io/",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "SOC 2 Type II confirmed. No status change."
+          "checked": "28 Aug 2026",
+          "history": "SOC 2 Type II confirmed. No status change. Re-checked 28 Aug 2026: incident sweep found no new material change."
         },
         {
           "name": "Chroma",
@@ -380,11 +442,21 @@
             5
           ],
           "best_for": "Local prototyping only — use the Rust version, never expose to the internet.",
-          "watch_out": "An official advisory (CVE-2026-45829) rates a pre-login remote-takeover bug 10.0/10. Still unpatched as of the latest release (v1.5.9) — the vendor shipped a new version without fixing it. Use the Rust server; never expose the Python server to the internet.",
+          "watch_out": "NVD rates this pre-login remote-takeover bug 10.0/10 (CVE-2026-45829). Still unpatched — the advisory lists no patched version, and v1.5.9 remains the latest stable release. Use the Rust server; never expose the Python server to the internet.",
           "source": "https://nvd.nist.gov/vuln/detail/CVE-2026-45829",
           "verified": true,
-          "checked": "11 Aug 2026",
-          "history": "Human-verified 22 Jul 2026 (CVE-2026-45829, CVSS 10.0). Re-checked 11 Aug 2026: still unpatched — vendor released v1.5.9 (up from 1.5.8) but did not fix the flaw. Warning stands; re-checking until a patch ships."
+          "checked": "28 Aug 2026",
+          "history": "Human-verified 22 Jul 2026 (CVE-2026-45829, CVSS 10.0). Re-checked 11 Aug 2026: v1.5.9 shipped without a fix. Re-checked 28 Aug 2026: still no patch — the GitHub advisory lists “Patched version: None” and 1.5.9 is still the latest stable. Warning stands; re-checking until a patch ships.",
+          "sources": [
+            {
+              "label": "NVD — CVE-2026-45829 (CVSS 10.0)",
+              "url": "https://nvd.nist.gov/vuln/detail/CVE-2026-45829"
+            },
+            {
+              "label": "GitHub advisory — no patched version",
+              "url": "https://github.com/advisories/GHSA-f4j7-r4q5-qw2c"
+            }
+          ]
         }
       ]
     },
@@ -419,8 +491,8 @@
           "watch_out": "No free self-host; HIPAA enterprise-only.",
           "source": "https://www.llamaindex.ai/",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "Generous free tier verified. No status change."
+          "checked": "28 Aug 2026",
+          "history": "Generous free tier verified. No status change. Re-checked 28 Aug 2026: incident sweep found no new material change."
         },
         {
           "name": "Reducto",
@@ -439,8 +511,8 @@
           "watch_out": "No free self-host; accuracy scores are vendor-run.",
           "source": "https://reducto.ai/",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "SOC 2, HIPAA and private deployment confirmed. Vendor-run benchmarks noted."
+          "checked": "28 Aug 2026",
+          "history": "SOC 2, HIPAA and private deployment confirmed. Vendor-run benchmarks noted. Re-checked 28 Aug 2026: incident sweep found no new material change."
         },
         {
           "name": "Docling",
@@ -459,8 +531,18 @@
           "watch_out": "Not turnkey; needs technical setup.",
           "source": "https://github.com/docling-project/docling",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "Now under the Linux Foundation — governance risk lowered."
+          "checked": "28 Aug 2026",
+          "history": "Now under the Linux Foundation — governance risk lowered. Re-checked 28 Aug 2026: governance strengthened further — docling-graph joined the project under LF AI & Data, and IBM and Red Hat launched a DocLang specification working group in June 2026.",
+          "sources": [
+            {
+              "label": "Docling joins LF AI & Data",
+              "url": "https://github.com/docling-project/docling/discussions/1184"
+            },
+            {
+              "label": "LF AI & Data — DocLang working group, June 2026",
+              "url": "https://www.linuxfoundation.org/press/lf-ai-data-foundation-launches-doclang-specification-working-group-to-advance-an-open-standard-for-ai-native-documents"
+            }
+          ]
         },
         {
           "name": "Unstructured",
@@ -479,8 +561,8 @@
           "watch_out": "Use the newer 'Transform' connector; HIPAA not listed.",
           "source": "https://unstructured.io/",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "Deprecated connector flagged; entry updated to the Transform connector."
+          "checked": "28 Aug 2026",
+          "history": "Deprecated connector flagged; entry updated to the Transform connector. Re-checked 28 Aug 2026: incident sweep found no new material change."
         }
       ]
     },
@@ -517,8 +599,18 @@
           "watch_out": "Primarily lets an agent RECEIVE money; agent-spending (Treasury) is still in preview. Toolkit package names are mid-restructure.",
           "source": "https://docs.stripe.com/mcp",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "Published 22 Jul 2026 as the trusted anchor for Payments (PCI L1, SOC 2, ISO 27001)."
+          "checked": "28 Aug 2026",
+          "history": "Published 22 Jul 2026 as the trusted anchor for Payments (PCI L1, SOC 2, ISO 27001). Re-checked 28 Aug 2026: Agentic Treasury is still access-by-request preview, so agent-spending remains preview; the MCP server is hosted at mcp.stripe.com with OAuth.",
+          "sources": [
+            {
+              "label": "Stripe — Agentic Treasury (preview, access by request)",
+              "url": "https://docs.stripe.com/treasury/agents"
+            },
+            {
+              "label": "Stripe MCP docs",
+              "url": "https://docs.stripe.com/mcp"
+            }
+          ]
         },
         {
           "name": "PayPal",
@@ -534,11 +626,21 @@
             5
           ],
           "best_for": "Sending and receiving across a huge global network.",
-          "watch_out": "A 2022 breach reportedly exposed some customers' Social Security numbers and drew a reported ~$2M New York regulator settlement. Python toolkit support still pending.",
+          "watch_out": "In January 2025 New York's Department of Financial Services fined PayPal $2 million over a December 2022 breach that exposed names, Social Security numbers and tax IDs for roughly 35,000 customers; the regulator cited missing multi-factor authentication and rate limiting. Python toolkit support still pending.",
           "source": "https://developer.paypal.com/ai-tools/mcp-server",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "Published as Caution: 2022 SSN breach and $2M NY fine on record."
+          "checked": "28 Aug 2026",
+          "history": "Published as Caution on the NYDFS enforcement action. Re-checked 28 Aug 2026: confirmed against the regulator's own press release.",
+          "sources": [
+            {
+              "label": "NYDFS — $2M penalty, 23 Jan 2025",
+              "url": "https://www.dfs.ny.gov/reports_and_publications/press_releases/pr20250123"
+            },
+            {
+              "label": "PayPal MCP server docs",
+              "url": "https://developer.paypal.com/ai-tools/mcp-server"
+            }
+          ]
         },
         {
           "name": "x402",
@@ -554,11 +656,21 @@
             5
           ],
           "best_for": "HTTP-native micropayments between agents and services.",
-          "watch_out": "Crypto/stablecoin settlement only (no fiat yet). A reported signature-bypass advisory and a security scan flagging high-risk issues across many ecosystem projects; real demand still thin.",
+          "watch_out": "Crypto/stablecoin settlement only (no fiat yet). A signature-verification bypass in the x402 SDK (GHSA-qr2g-p6q7-w82m, March 2026) has been patched; per the advisory it affected Solana facilitators and did not put user keys, contracts or funds at risk. Separately, independent research demonstrates five practical attacks on the protocol's authorization, binding and replay handling. Real demand still thin.",
           "source": "https://github.com/coinbase/x402",
           "verified": false,
-          "checked": "11 Aug 2026",
-          "history": "Published as Caution: security-scan flags across the ecosystem; strong backing."
+          "checked": "28 Aug 2026",
+          "history": "Published as Caution. Re-checked 28 Aug 2026: the SDK advisory is patched (npm @x402/svm 2.6.0, pip 2.3.0, Go 2.5.0); the remaining findings are design-level and validated academically, which keeps this at Caution rather than Warning.",
+          "sources": [
+            {
+              "label": "GitHub advisory GHSA-qr2g-p6q7-w82m — patched",
+              "url": "https://github.com/advisories/GHSA-qr2g-p6q7-w82m"
+            },
+            {
+              "label": "Five Attacks on x402 (arXiv 2605.11781)",
+              "url": "https://arxiv.org/abs/2605.11781"
+            }
+          ]
         }
       ]
     }

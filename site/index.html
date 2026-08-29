@@ -262,6 +262,9 @@
   .pre-tool .pre-meta{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--text-faint)}
   .pre-tool b{color:var(--text-primary)}
   .pre-tool a{color:var(--gold)}
+  .srcs{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:baseline;margin:6px 0}
+  .srcs .k{flex:0 0 auto}
+  .srcs .src{display:inline-block}
 </style>
 </head>
 <body>
@@ -414,6 +417,24 @@
   function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
   function dots(n){ return '<span class="f">'+DOT.repeat(n)+'</span><span class="e">'+DOT.repeat(5-n)+'</span>'; }
   function stClass(status){ return 'st-'+status; }
+  // Claim-level citations when the card has them; the vendor page otherwise.
+  function srcLinks(t){
+    var out = '';
+    if(t.sources && t.sources.length){
+      out += '<div class="srcs"><span class="k">Sources</span>'
+          +  t.sources.map(function(s){
+               return '<a class="src" href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.label)+' \u2197</a>';
+             }).join('')
+          +  '</div>';
+    }
+    // Don't repeat the vendor page when it is already one of the cited sources.
+    var cited = (t.sources||[]).some(function(s){ return s.url === t.source; });
+    if(t.source && !cited){
+      out += '<a class="src" href="'+esc(t.source)+'" target="_blank" rel="noopener">'
+          +  (t.sources && t.sources.length ? 'Vendor page' : 'Source')+' \u2197</a>';
+    }
+    return out;
+  }
   function badgeText(t){
     if(t.status==='warning') return (t.verified ? 'VERIFIED WARNING' : 'WARNING');
     return (t.status.toUpperCase()) + (t.tagline ? ' · ' + t.tagline.toUpperCase() : '');
@@ -454,7 +475,7 @@
       +     '<div class="subs">'+subs+'</div>'
       +     '<div class="mid"><span class="k">Best for</span><span class="bf">'+esc(t.best_for||'')+'</span>'
       +       '<div class="wo">'+warnIco+'<span>'+esc(t.watch_out||'')+'</span></div>'
-      +       '<a class="src" href="'+esc(t.source)+'" target="_blank" rel="noopener">Source ↗</a></div>'
+      +       srcLinks(t)+'</div>'
       +     '<div class="hist"><span class="k">History</span><p>'+esc(t.history||'—')+'</p></div>'
       +   '</div>'
       + '</div>';

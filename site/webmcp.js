@@ -72,6 +72,14 @@
         (t.checked ? ' (last reviewed ' + t.checked + ')' : '') + '.';
   }
 
+  function sourceLines(t) {
+    if (!t.sources || !t.sources.length) return t.source ? 'Source: ' + t.source : '';
+    var cited = t.sources.some(function (s) { return s.url === t.source; });
+    return 'Sources (each backs a specific claim above):\n' +
+      t.sources.map(function (s) { return '  - ' + s.label + ': ' + s.url; }).join('\n') +
+      (t.source && !cited ? '\n  - Vendor page: ' + t.source : '');
+  }
+
   function toolSummary(t) {
     return [
       t.name + ' — ' + String(t.status).toUpperCase(),
@@ -454,7 +462,7 @@
           'Watch out: ' + (t.watch_out || '—') + '\n' +
           (t.history ? 'History: ' + t.history + '\n' : '') +
           verifiedLine(t) + '\n' +
-          'Source: ' + (t.source || '—') + '\n\n' + HONESTY
+          sourceLines(t) + '\n\n' + HONESTY
         );
       }
     },
@@ -499,7 +507,7 @@
           'Watch out: ' + (t.watch_out || '—') + '\n' +
           'History: ' + (t.history || '—') + '\n' +
           verifiedLine(t) + '\n' +
-          'Assessed against: ' + (t.source || '—') + '\n\n' +
+          sourceLines(t) + '\n\n' +
           'The verdict is an editorial judgement informed by these six scores, not a pass/fail formula. ' + HONESTY
         );
       }

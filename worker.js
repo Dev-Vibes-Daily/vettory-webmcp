@@ -58,6 +58,9 @@ function record(t) {
     watch_out: t.watch_out,
     history: t.history || null,
     source: t.source,
+    // Claim-level citations: each entry backs a specific statement on the card,
+    // rather than one general link standing in for everything.
+    sources: Array.isArray(t.sources) ? t.sources : [],
   };
 }
 
@@ -88,7 +91,14 @@ function catalogHTML() {
         (t.best_for ? "<p><b>Best for:</b> " + esc(t.best_for) + "</p>" : "") +
         (t.watch_out ? "<p><b>Watch out:</b> " + esc(t.watch_out) + "</p>" : "") +
         "<p><b>Rubric:</b> " + scores + "</p>" +
-        (t.source ? '<p><a href="' + esc(t.source) + '" rel="noopener">Source</a></p>' : "") +
+        (Array.isArray(t.sources) && t.sources.length
+          ? "<p><b>Sources:</b> " +
+            t.sources.map((s) => '<a href="' + esc(s.url) + '" rel="noopener">' + esc(s.label) + "</a>").join(" \u00b7 ") +
+            "</p>"
+          : "") +
+        (t.source && !(t.sources || []).some((s) => s.url === t.source)
+          ? '<p><a href="' + esc(t.source) + '" rel="noopener">Vendor page</a></p>'
+          : "") +
         "</article>";
     }
   }
