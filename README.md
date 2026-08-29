@@ -126,20 +126,34 @@ The panel in the bottom-right shows whether an agent is connected and logs each 
 
 ## How it works
 
-One Cloudflare Worker serves everything.
+One Cloudflare Worker serves everything, for $0. An agent can reach the same vetted
+catalog three ways — and the human watching the page sees whichever one it used.
 
+```mermaid
+flowchart TD
+    AGENT(["AI agent"])
+    HUMAN(["The person watching the page"])
+
+    AGENT -->|"calls a tool · document.modelContext"| TOOLS
+    AGENT -.->|"or just reads the page — no WebMCP needed"| SSR
+    AGENT -.->|"or calls the HTTP door"| API
+
+    subgraph worker["One Cloudflare Worker"]
+        TOOLS["site/webmcp.js<br/>6 WebMCP tools"]
+        SSR["Server-rendered catalog<br/>every verdict, in the HTML"]
+        API["/api/search<br/>key-gated, rate-limited"]
+        CATALOG[("data/catalog.json<br/>single source of truth")]
+    end
+
+    TOOLS --> CATALOG
+    SSR --> CATALOG
+    API --> CATALOG
+
+    TOOLS ==>|"drives the catalog on screen"| HUMAN
 ```
-worker.js
- ├── /             → the site (static assets) + CSP and hardening headers
- ├── /api/catalog  → public JSON that powers the page, rate-limited per IP
- └── /api/search   → the agent door: API-key gated, rate-limited
-                     (public demo key: vty_public_demo)
 
-data/catalog.json  → single source of truth. The website, the HTTP API, and the
-                     WebMCP tools all read it, so they cannot drift apart.
-
-site/webmcp.js     → the WebMCP layer: registers the five tools above.
-```
+The catalog is compiled into the Worker, so the website, the HTTP API and the WebMCP
+tools cannot drift apart — they are reading the same file.
 
 `site/webmcp.js` registers on **`document.modelContext`** per the current spec, and falls
 back to **`navigator.modelContext`** for Chrome 149's origin trial (deprecated in 150),
