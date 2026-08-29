@@ -65,11 +65,21 @@
             4
           ],
           "best_for": "When an agent needs to actually text a person, two-way, worldwide.",
-          "watch_out": "US texting needs carrier registration; publicly reported breaches (2022 phishing, 2024 Authy) have since been remediated.",
+          "watch_out": "The official Twilio MCP server is read-only — it searches and retrieves API documentation and cannot send a message, place a call, or touch your account. Sending requires your own API integration, or Twilio Labs' experimental twilio-alpha MCP server, which is not covered by Twilio Support and takes account credentials as a command-line argument. US texting needs carrier registration; publicly reported breaches (2022 phishing, 2024 Authy) have since been remediated.",
           "source": "https://www.twilio.com/docs/ai/mcp",
           "verified": false,
           "checked": "28 Aug 2026",
-          "history": "Breach history reviewed and judged remediated. Trust held at 5. Re-checked 28 Aug 2026: incident sweep found no new material change."
+          "history": "Breach history reviewed and judged remediated. Trust held at 5. Re-checked 28 Aug 2026: the official MCP server turns out to be documentation search only (twilio__search / twilio__retrieve), so the official path cannot send — disclosed above. Trust is unchanged; this is a fit limitation, not a safety one.",
+          "sources": [
+            {
+              "label": "Twilio MCP server docs — read-only search/retrieve",
+              "url": "https://www.twilio.com/docs/ai/mcp"
+            },
+            {
+              "label": "Twilio Alpha MCP server (experimental, unsupported)",
+              "url": "https://www.twilio.com/en-us/blog/introducing-twilio-alpha-mcp-server"
+            }
+          ]
         }
       ]
     },
@@ -134,7 +144,7 @@
         },
         {
           "name": "SendGrid",
-          "status": "caution",
+          "status": "trusted",
           "tagline": "mind the caveats",
           "oneLine": "Huge-scale, battle-tested — but no official agent connector.",
           "scores": [
@@ -146,15 +156,23 @@
             3
           ],
           "best_for": "High-volume sending on a proven platform.",
-          "watch_out": "No official connector; the permanent free tier was retired on 27 May 2025 and replaced by a 60-day trial (100 emails/day); not self-serve HIPAA; parent company (Twilio) has past breaches, since remediated.",
-          "source": "https://sendgrid.com/en-us/policies/security",
+          "watch_out": "No official connector that can actually send — Twilio's official MCP server is read-only. sendgrid.com merged into twilio.com in Feb 2026 (branding and docs only; the API, SMTP endpoints and keys are unchanged). The permanent free tier was retired on 27 May 2025 and replaced by a 60-day trial (100 emails/day); not self-serve HIPAA; Twilio has past breaches, since remediated.",
+          "source": "https://www.twilio.com/en-us/security",
           "verified": false,
           "checked": "28 Aug 2026",
-          "history": "Downgraded to Caution when the permanent free tier became a trial. Re-checked 28 Aug 2026: the 60-day trial still stands.",
+          "history": "Downgraded to Caution when the permanent free tier became a trial. Re-checked 28 Aug 2026: the trial still stands. Verdict revised to Trusted on 28 Aug 2026 — the downgrade had been triggered by a pricing change, which the rubric already scores under Cost, and partly by the parent company's breach history, which Twilio's own Trusted entry discloses. sendgrid.com merged into twilio.com in Feb 2026, so the two now share one security page. Every caveat above still stands; what changed is the verdict, not the disclosure.",
           "sources": [
             {
               "label": "Twilio changelog — SendGrid free plan changes",
               "url": "https://www.twilio.com/en-us/changelog/sendgrid-free-plan"
+            },
+            {
+              "label": "Twilio SendGrid Email API (sendgrid.com now redirects here)",
+              "url": "https://www.twilio.com/en-us/sendgrid"
+            },
+            {
+              "label": "Twilio MCP server — read-only, search and retrieve only",
+              "url": "https://www.twilio.com/docs/ai/mcp"
             }
           ]
         }
