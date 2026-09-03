@@ -1,7 +1,7 @@
 {
   "name": "Vettory Catalog",
   "version": "0.2",
-  "updated": "2026-08-28",
+  "updated": "2026-09-03",
   "rubric": [
     "trust",
     "fit",
@@ -110,11 +110,21 @@
             5
           ],
           "best_for": "A clean, modern, agent-ready way to send email.",
-          "watch_out": "Email only; sending-domain DNS setup takes a few steps.",
+          "watch_out": "Email only; sending-domain DNS setup takes a few steps. Not HIPAA — Resend states plainly that it cannot sign a BAA. The free tier is 3,000 emails/month but capped at 100 a day, which is the limit that actually bites.",
           "source": "https://resend.com/security",
           "verified": false,
-          "checked": "28 Aug 2026",
-          "history": "SOC 2 and GDPR confirmed. Free tier steady at 3,000 emails/month. Re-checked 28 Aug 2026: incident sweep found no new material change."
+          "checked": "3 Sep 2026",
+          "history": "SOC 2 Type II (audited via Vanta) and GDPR confirmed. Re-checked 3 Sep 2026 against Resend's own security and pricing pages: both hold. Free tier is 3,000/month, 100/day, 3 domains, 30-day log retention. Resend is explicit that it is not HIPAA compliant and does not sign BAAs — now disclosed.",
+          "sources": [
+            {
+              "label": "Resend security — SOC 2 Type II, GDPR, not HIPAA",
+              "url": "https://resend.com/security"
+            },
+            {
+              "label": "Resend pricing — free tier 3,000/mo, 100/day",
+              "url": "https://resend.com/pricing"
+            }
+          ]
         },
         {
           "name": "Postmark",
@@ -272,11 +282,21 @@
             3
           ],
           "best_for": "Finding the exact right thing by meaning, not keywords.",
-          "watch_out": "Pricier per search; needs a little tuning.",
+          "watch_out": "Pricier per search; needs a little tuning. HIPAA and zero-data-retention are Enterprise-only — they require a sales conversation, not a signup.",
           "source": "https://exa.ai/",
           "verified": false,
-          "checked": "28 Aug 2026",
-          "history": "SOC 2 and HIPAA confirmed. Well funded; no change since first vetting. Re-checked 28 Aug 2026: incident sweep found no new material change."
+          "checked": "3 Sep 2026",
+          "history": "Well funded; no status change. Re-checked 3 Sep 2026: SOC 2 Type II confirmed (upgraded from Type I in 2024). The earlier note that 'HIPAA confirmed' was looser than the facts — HIPAA and zero data retention are Enterprise-plan features, now stated as such.",
+          "sources": [
+            {
+              "label": "Exa enterprise security documentation",
+              "url": "https://exa.ai/docs/reference/security"
+            },
+            {
+              "label": "Exa Trust Center",
+              "url": "https://trust.exa.ai"
+            }
+          ]
         },
         {
           "name": "Linkup",
@@ -295,8 +315,14 @@
           "watch_out": "Youngest/smallest; a little vendor-longevity risk.",
           "source": "https://www.linkup.so/",
           "verified": false,
-          "checked": "28 Aug 2026",
-          "history": "Keeps no data by default — noted against their SOC 2 report. Re-checked 28 Aug 2026: incident sweep found no new material change."
+          "checked": "3 Sep 2026",
+          "history": "Keeps no data by default. Re-checked 3 Sep 2026 against Linkup's security documentation: SOC 2 Type II, zero data retention, and a 72-hour incident-notification commitment (24 hours for critical incidents) all confirmed.",
+          "sources": [
+            {
+              "label": "Linkup security & privacy documentation",
+              "url": "https://docs.linkup.so/pages/security-and-privacy/security"
+            }
+          ]
         },
         {
           "name": "Perplexity",
@@ -437,14 +463,24 @@
             4,
             5,
             5,
-            3
+            4
           ],
           "best_for": "A feature-rich open-source vector DB, strong at scale.",
-          "watch_out": "No permanent free managed tier.",
+          "watch_out": "The always-free tier is capped at one cluster and one collection; paid tiers step up steeply from there. HIPAA is Enterprise Cloud (AWS) only.",
           "source": "https://weaviate.io/",
           "verified": false,
-          "checked": "28 Aug 2026",
-          "history": "SOC 2 Type II confirmed. No status change. Re-checked 28 Aug 2026: incident sweep found no new material change."
+          "checked": "3 Sep 2026",
+          "history": "SOC 2 Type II confirmed (independently audited via Drata). Re-checked 3 Sep 2026: the earlier caveat 'no permanent free managed tier' is no longer true — Weaviate Cloud now has an always-free tier (1 cluster, 100k objects, 1 GB memory, 10 GB disk, no card, no expiry), introduced around June 2026. Cost score raised 3 -> 4 on that evidence.",
+          "sources": [
+            {
+              "label": "Weaviate pricing — always-free tier",
+              "url": "https://weaviate.io/pricing"
+            },
+            {
+              "label": "Weaviate security — SOC 2 Type II (Drata)",
+              "url": "https://weaviate.io/security"
+            }
+          ]
         },
         {
           "name": "Chroma",
@@ -463,8 +499,8 @@
           "watch_out": "NVD rates this pre-login remote-takeover bug 10.0/10 (CVE-2026-45829). Still unpatched — the advisory lists no patched version, and v1.5.9 remains the latest stable release. Use the Rust server; never expose the Python server to the internet.",
           "source": "https://nvd.nist.gov/vuln/detail/CVE-2026-45829",
           "verified": true,
-          "checked": "28 Aug 2026",
-          "history": "Human-verified 22 Jul 2026 (CVE-2026-45829, CVSS 10.0). Re-checked 11 Aug 2026: v1.5.9 shipped without a fix. Re-checked 28 Aug 2026: still no patch — the GitHub advisory lists “Patched version: None” and 1.5.9 is still the latest stable. Warning stands; re-checking until a patch ships.",
+          "checked": "3 Sep 2026",
+          "history": "Human-verified 22 Jul 2026 (CVE-2026-45829, CVSS 10.0). Re-checked 11 Aug 2026: v1.5.9 shipped without a fix. Re-checked 28 Aug 2026: still no patch — the GitHub advisory lists “Patched version: None” and 1.5.9 is still the latest stable. Re-checked 3 Sep 2026: the advisory still lists no patched version, and v1.5.9 (May 2026) is still the latest stable — 1.5.10 exists only as dev builds. Warning stands; re-checking until a patch ships.",
           "sources": [
             {
               "label": "NVD — CVE-2026-45829 (CVSS 10.0)",
@@ -506,11 +542,21 @@
             4
           ],
           "best_for": "Reading documents reliably with no infrastructure.",
-          "watch_out": "No free self-host; HIPAA enterprise-only.",
+          "watch_out": "No free self-host; a HIPAA BAA requires the Enterprise plan.",
           "source": "https://www.llamaindex.ai/",
           "verified": false,
-          "checked": "28 Aug 2026",
-          "history": "Generous free tier verified. No status change. Re-checked 28 Aug 2026: incident sweep found no new material change."
+          "checked": "3 Sep 2026",
+          "history": "Re-checked 3 Sep 2026: free tier is 10,000 credits/month for all users — roughly 3,300 to 10,000 pages depending on parsing mode. SOC 2 Type II confirmed. HIPAA-track controls are supported, but a BAA requires Enterprise.",
+          "sources": [
+            {
+              "label": "LlamaCloud pricing & free credits",
+              "url": "https://developers.llamaindex.ai/python/cloud/general/pricing/"
+            },
+            {
+              "label": "LlamaParse pricing",
+              "url": "https://www.llamaindex.ai/pricing"
+            }
+          ]
         },
         {
           "name": "Reducto",
@@ -529,8 +575,14 @@
           "watch_out": "No free self-host; accuracy scores are vendor-run.",
           "source": "https://reducto.ai/",
           "verified": false,
-          "checked": "28 Aug 2026",
-          "history": "SOC 2, HIPAA and private deployment confirmed. Vendor-run benchmarks noted. Re-checked 28 Aug 2026: incident sweep found no new material change."
+          "checked": "3 Sep 2026",
+          "history": "Re-checked 3 Sep 2026: SOC 2 Type II and HIPAA with a BAA on request both confirmed. Private deployment goes further than first recorded — customer VPC, on-premises and fully air-gapped installs are all supported, and zero data retention is the default on Growth and Enterprise. Accuracy benchmarks remain vendor-run.",
+          "sources": [
+            {
+              "label": "Reducto trust centre — ZDR, on-prem, air-gapped, HIPAA, SOC 2, BAA",
+              "url": "https://llms.reducto.ai/trust-center-on-prem-zero-retention-hipaa-soc2-baa"
+            }
+          ]
         },
         {
           "name": "Docling",
@@ -568,7 +620,7 @@
           "tagline": "widest formats",
           "oneLine": "The broadest range of file types, with dozens of source connectors.",
           "scores": [
-            4,
+            5,
             4,
             3,
             4,
@@ -576,11 +628,17 @@
             5
           ],
           "best_for": "Pipelines ingesting many file types from many sources.",
-          "watch_out": "Use the newer 'Transform' connector; HIPAA not listed.",
+          "watch_out": "HIPAA-aligned security is listed, but no Business Associate Agreement is documented — confirm one before putting PHI through it.",
           "source": "https://unstructured.io/",
           "verified": false,
-          "checked": "28 Aug 2026",
-          "history": "Deprecated connector flagged; entry updated to the Transform connector. Re-checked 28 Aug 2026: incident sweep found no new material change."
+          "checked": "3 Sep 2026",
+          "history": "Re-checked 3 Sep 2026 against Unstructured's own security documentation: the earlier caveat 'HIPAA not listed' was wrong. HIPAA is listed, alongside SOC 2 Type II, ISO 27001, FedRAMP and CMMC 2.0 Level 2 — a stronger posture than first recorded, so Trust was raised 4 -> 5. No BAA is documented anywhere, which is the caveat that replaces it. An earlier unverified note about a deprecated connector was dropped rather than carried unproven.",
+          "sources": [
+            {
+              "label": "Unstructured security & compliance overview",
+              "url": "https://docs.unstructured.io/business/security-compliance/overview"
+            }
+          ]
         }
       ]
     },
