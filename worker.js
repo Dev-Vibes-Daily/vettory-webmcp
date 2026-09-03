@@ -76,6 +76,12 @@ function esc(s) {
 // verdicts. So the Worker renders the same catalog into the page server-side.
 // Browsers with JavaScript replace it with the interactive version; everything
 // else still gets every verdict, in text.
+function formatUpdated(d) {
+  const m = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const p = String(d || "").split("-");
+  return p.length === 3 ? parseInt(p[2], 10) + " " + m[parseInt(p[1], 10) - 1] + " " + p[0] : String(d || "");
+}
+
 function catalogHTML() {
   let out = '<div class="prerender">';
   for (const c of catalog.categories) {
@@ -215,9 +221,24 @@ export default {
       for (const [k, v] of Object.entries(SECURITY_HEADERS)) headers.set(k, v);
       const out = new Response(res.body, { status: res.status, statusText: res.statusText, headers });
       if ((res.headers.get("content-type") || "").includes("text/html")) {
-        return new HTMLRewriter()
-          .on("#rows", { element(el) { el.setInnerContent(catalogHTML(), { html: true }); } })
-          .transform(out);
+        // The headline stats are filled in by JavaScript too, so a reader that
+        // doesn't run scripts would see em-dashes where the numbers should be —
+        // including the date of the last re-check, which is the one number an
+        // agent most needs to know is current.
+        const all = catalog.categories.flatMap((c) => c.tools);
+        const stats = {
+          "#statTools": String(all.length),
+          "#statWarn": String(all.filter((t) => t.status === "warning").length),
+          "#statDims": String(RUBRIC.length),
+          "#statChecked": formatUpdated(catalog.updated),
+        };
+        let rw = new HTMLRewriter().on("#rows", {
+          element(el) { el.setInnerContent(catalogHTML(), { html: true }); },
+        });
+        for (const [sel, val] of Object.entries(stats)) {
+          rw = rw.on(sel, { element(el) { el.setInnerContent(val); } });
+        }
+        return rw.transform(out);
       }
       return out;
     }
